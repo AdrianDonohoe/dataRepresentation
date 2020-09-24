@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library>
+    <catalogue category="Technical">
+        <book>
+            <ISBN>1491962291</ISBN>
+            <Title>Hands-On Machine Learning with Scikit-Learn and TensorFlow</Title>
+            <Author>Aurelien Geron</Author>
+        </book>
+        <book>
+            <ISBN>1449355730</ISBN>
+            <Title>Learning Python: Powerful Object-Oriented Programming</Title>
+            <Author>Mark Lutz</Author>
+        </book>
+    </catalogue>
+    <catalogue category="Cook">
+        <book>
+            <ISBN>0241286123</ISBN>
+            <Title>Mary Berry's Complete Cookbook</Title>
+            <Author>Mary Berry</Author>
+        </book>
+        <book>
+            <ISBN>9781785031168</ISBN>
+            <Title>Ottolenghi SIMPLE</Title>
+            <Author>Yotam Ottolenghi</Author>
+        </book>
+    </catalogue>
+</library>
