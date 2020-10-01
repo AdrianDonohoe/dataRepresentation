@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>e2.9</title>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <td>data1</td>
+                <td>data2</td>
+                <td><button onclick="output(this)">ouput</button></td>
+            </tr>
+        </table>
+        <script>
+            function output(buttonElement){
+                var rowElement = buttonElement.parentNode.parentNode
+                var data = {}
+                data.cell0 = rowElement.cells[0].firstChild.textContent
+                data.cell1 = rowElement.cells[1].firstChild.textContent
+                
+                console.log(JSON.stringify(data))
+            }
+        </script>
+    </body>
+</html>
