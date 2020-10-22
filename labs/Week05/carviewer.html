@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lab 5.4 challenge</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <h1>Cars</h1>
+        <div><button id="showCreateButton" onclick="showCreate()">Create</button></div>
+        <br/>
+        <div>
+            <table class="table" id="carTable">
+                <tr>
+                    <th>reg</th>
+                    <th>make</th>
+                    <th>model</th>
+                    <th>price</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                </tr>
+                
+            </table>
+            <br/>
+        </div>
+        
+        <div id="createUpdateForm" style="display: none;">
+            Reg <input class="form-control" type="text" name="reg"><br/>
+            Make <select name="make" class="form-control">
+                <option value="Ford">Ford</option>
+                <option value="Fiat">Fiat</option>
+                <option value="Nissan">Nissan</option>
+                </select><br/>
+            Model <input class="form-control" type="text" name="model"><br/>
+            Price <input class="form-control" type="number" name="price"><br/>
+            <span id="createLabel">Create a</span> <span id="updateLabel"> update</span> Car
+            <span><button id="doCreateButton" onclick="doCreate()">Create</button></span>
+            <span><button id="doUpdateButton" onclick="doUpdate()">Update</button></span>
+        </div>
+
+        <script>
+            function showCreate(){
+                document.getElementById("showCreateButton").style.display = "none"
+                document.getElementById("carTable").style.display = "none"
+                document.getElementById("createUpdateForm").style.display = "block"
+                
+                document.getElementById("createLabel").style.display = "inline"
+                document.getElementById("updateLabel").style.display = "none"
+
+                document.getElementById("doCreateButton").style.display = "block"
+                document.getElementById("doUpdateButton").style.display = "none"
+            }
+            
+            function showUpdate(buttonElement){
+                document.getElementById("showCreateButton").style.display = "none"
+                document.getElementById("carTable").style.display = "none"
+                document.getElementById("createUpdateForm").style.display = "block"
+
+                document.getElementById("createLabel").style.display = "none"
+                document.getElementById("updateLabel").style.display = "inline"
+
+                document.getElementById("doCreateButton").style.display = "none"
+                document.getElementById("doUpdateButton").style.display = "inline"
+
+                var rowElement = buttonElement.parentNode.parentNode
+
+                var car = getCarFromRow(rowElement)
+                populateWithFromCar(car)
+            }
+
+            function doCreate(){
+                var form = document.getElementById("createUpdateForm")
+
+                var car = {}
+                car.reg = form.querySelector('input[name="reg"]').value
+                car.make = form.querySelector('select[name="make"]').value
+                car.model = form.querySelector('input[name="model"]').value
+                car.price = form.querySelector('input[name="price"]').value
+                createCarAjax(car)
+                addCarToTable(car)
+
+                clearForm()
+                showViewAll()
+            }
+
+            function showViewAll(){
+                document.getElementById("showCreateButton").style.display = "block"
+                document.getElementById("carTable").style.display = "inline"
+                document.getElementById("createUpdateForm").style.display = "none"
+            }
+
+            function clearForm(){
+                var form = document.getElementById("createUpdateForm")
+
+                form.querySelector('input[name="reg"]').disabled = false
+                form.querySelector('input[name="reg"]').value = ''
+                form.querySelector('select[name="make"]').value = ''
+                
+                form.querySelector('input[name="model"]').value = ''
+                form.querySelector('input[name="price"]').value = ''
+            }
+
+            function addCarToTable(car){
+                var tableElement = document.getElementById("carTable")
+                var rowElement = tableElement.insertRow(-1)
+
+                rowElement.setAttribute('id',car.reg)
+                var cell0 = rowElement.insertCell(0)
+                cell0.innerHTML = car.reg 
+                var cell1 = rowElement.insertCell(1)
+                cell1.innerHTML = car.make
+                var cell2 = rowElement.insertCell(2)
+                cell2.innerHTML = car.model
+                var cell3 = rowElement.insertCell(3)
+                cell3.innerHTML = car.price
+                var cell4 = rowElement.insertCell(4)
+                cell4.innerHTML = '<button onclick="showUpdate(this)">update</button>'
+                var cell5 = rowElement.insertCell(5)
+                cell5.innerHTML = '<button onclick="doDelete(this)">delete</button>'
+            }
+
+            function getCarFromRow(rowElement){
+                var car = {}
+
+                car.reg = rowElement.cells[0].firstChild.textContent
+                car.make = rowElement.cells[1].firstChild.textContent
+                car.model = rowElement.cells[2].firstChild.textContent
+                car.price = rowElement.cells[3].firstChild.textContent
+
+                return car
+            }
+
+            function populateWithFromCar(car){
+                var form = document.getElementById("createUpdateForm")
+
+                form.querySelector('input[name="reg"]').disabled = true
+
+                form.querySelector('input[name="reg"]').value = car.reg
+                form.querySelector('select[name="make"]').value = car.make
+                form.querySelector('input[name="model"]').value = car.model
+                form.querySelector('input[name="price"]').value = car.price
+            }
+
+            function getCarFromForm(){
+                var form = document.getElementById("createUpdateForm")
+                var car = {}
+                car.reg = form.querySelector('input[name="reg"]').value
+                car.make = form.querySelector('select[name="make"]').value
+                car.model = form.querySelector('input[name="model"]').value
+                car.price = form.querySelector('input[name="price"]').value
+                console.log(JSON.stringify(car))
+                return car
+            }
+
+            function setCarInRow(rowElement,car){
+                rowElement.cells[0].firstChild.textContent = car.reg
+                rowElement.cells[1].firstChild.textContent = car.make
+                rowElement.cells[2].firstChild.textContent = car.model
+                rowElement.cells[3].firstChild.textContent = car.price
+            }
+
+            function doUpdate(){
+                var car = getCarFromForm();
+                var rowElement = document.getElementById(car.reg)
+                updateCarAjax(car);
+                setCarInRow(rowElement,car);
+                
+
+                clearForm()
+                showViewAll()
+            }
+
+            function doDelete(r){
+                var tableElement = document.getElementById('carTable')
+                var rowElement = r.parentNode.parentNode;
+                var index = r.parentNode.parentNode.rowIndex;
+                deleteCarAjax(rowElement.getAttribute("id"));
+                tableElement.deleteRow(index);
+            }
+            
+            function getAllAjax(){
+                $.ajax({
+                    "url": "http://127.0.0.1:5000/cars",
+                    "method":"GET",
+                    "data":"",
+                    "dataType": "JSON",
+                    "success":function(result){
+                        for (car of result.cars){
+                            addCarToTable(car)
+                        }
+                    },
+                    "error":function(xhr,status,error){
+                        console.log("error: "+status+" msg:"+error);
+                    }
+                });
+            }
+            function createCarAjax(car){
+                //var car = {"reg":"12 D 1234","make":"Fiat","model":"Punto","price":3000}
+                console.log(JSON.stringify(car));
+
+                $.ajax({
+                    "url": "http://127.0.0.1:5000/cars",
+                    "method":"PUT",
+                    "data":JSON.stringify(car),
+                    "dataType": "JSON",
+                    contentType: "application/json; charset=utf-8",
+                    "success":function(result){
+                        console.log(result);
+                    },
+                    "error":function(xhr,status,error){
+                        console.log("error: "+status+" msg:"+error);
+                    }
+                });
+            }
+
+            function updateCarAjax(car){
+                //var car = {"reg":"181 G 1234","price":18001}
+                console.log(JSON.stringify(car));
+                console.log(encodeURI(car.reg));
+
+                $.ajax({
+                    "url": "http://127.0.0.1:5000/cars/"+encodeURI(car.reg),
+                    "method":"PUT",
+                    "data":JSON.stringify(car),
+                    "dataType": "JSON",
+                    contentType: "application/json; charset=utf-8",
+                    "success":function(result){
+                        //console.log('hello')
+                        console.log(result);
+                    },
+                    "error":function(xhr,status,error){
+                        console.log("error: "+status+" msg:"+error);
+                    }
+                });
+            }
+
+            function deleteCarAjax(reg){
+                //var car = {"reg":"181 G 1234"}
+                console.log(reg)
+
+                $.ajax({
+                    "url": "http://127.0.0.1:5000/cars/"+encodeURI(reg),
+                    "method":"DELETE",
+                    "data":"",
+                    "dataType": "JSON",
+                    contentType: "application/json; charset=utf-8",
+                    "success":function(result){
+                        //console.log('hello')
+                        console.log(result);
+                    },
+                    "error":function(xhr,status,error){
+                        console.log("error: "+status+" msg:"+error);
+                    }
+                });
+            }
+
+            
+            getAllAjax();
+        </script>
+
+    </body>
+</html>
