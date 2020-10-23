@@ -57,7 +57,8 @@ def create_car():
 # curl -i -H "Content-Type:application/json" -X POST -d '{"reg":"12 D 1234","make":"Fiat","model":"Punto","price":3000}' http://localhost:5000/cars
 # for windows use this one
 # curl -i -H "Content-Type:application/json" -X POST -d "{\"reg\":\"12 D 1234\",\"make\":\"Fiat\",\"model\":\"Punto\",\"price\":3000}" http://localhost:5000/cars
-@app.route('/cars/<string:reg>', methods =['PUT'])
+
+@app.route('/cars/<string:reg>', methods=['PUT'])
 def update_car(reg):
     foundCars=list(filter(lambda t : t['reg'] == reg, cars))
     if len(foundCars) == 0:

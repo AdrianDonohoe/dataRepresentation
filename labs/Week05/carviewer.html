@@ -39,6 +39,7 @@
             <span><button id="doCreateButton" onclick="doCreate()">Create</button></span>
             <span><button id="doUpdateButton" onclick="doUpdate()">Update</button></span>
         </div>
+        
 
         <script>
             function showCreate(){
@@ -163,6 +164,7 @@
 
             function doUpdate(){
                 var car = getCarFromForm();
+                car.price = Number(car.price) // AJAX Route for PUT Method was failing with 400 as we were passing a string not int
                 var rowElement = document.getElementById(car.reg)
                 updateCarAjax(car);
                 setCarInRow(rowElement,car);
@@ -202,7 +204,7 @@
 
                 $.ajax({
                     "url": "http://127.0.0.1:5000/cars",
-                    "method":"PUT",
+                    "method":"POST",
                     "data":JSON.stringify(car),
                     "dataType": "JSON",
                     contentType: "application/json; charset=utf-8",
@@ -227,7 +229,6 @@
                     "dataType": "JSON",
                     contentType: "application/json; charset=utf-8",
                     "success":function(result){
-                        //console.log('hello')
                         console.log(result);
                     },
                     "error":function(xhr,status,error){
