@@ -1,6 +1,6 @@
 import requests, json
 
-apiKey = '160244469f8c71bdf7211cdb20499d3cfb6dfa54'
+# removed apiKey
 
 
 url = 'https://api.github.com/users/AdrianDonohoe/repos'
