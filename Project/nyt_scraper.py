@@ -1,3 +1,5 @@
+# Created by Adrian Donohoe 19/11/2020
+
 import requests
 from bs4 import BeautifulSoup
 import csv
@@ -20,7 +22,7 @@ for state in (states):
 
     trump = table.findAll("tr", class_="e-donald-j-trump")
     biden = table.findAll("tr", class_="e-joseph-r-biden")
-
+    
     trump = trump[0].find_all('span')
     biden = biden[0].find_all('span')
 
@@ -29,11 +31,16 @@ for state in (states):
     biden_votes = biden[10].text
     votes.append(biden_votes)
 
+    trump_percent = trump[14].text
+    votes.append(trump_percent)
+    biden_percent = biden[11].find_all("span")[0].text
+    votes.append(biden_percent)
+    
     electoral_votes = table.findAll("td", class_="e-ev")[0]
     electoral_votes = electoral_votes.find_all("span", class_="e-ev-display")
     electoral_votes = electoral_votes[0].text
     votes.append(electoral_votes)
-    
+
     votes.append(state[1])
     votes.append(state[2])
 
