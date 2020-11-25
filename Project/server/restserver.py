@@ -21,7 +21,7 @@ app = Flask(__name__,
 #       }
 #]
 
-with open('../2_states.json') as f:
+with open('../states.json') as f:
     states = json.load(f)
 
 
