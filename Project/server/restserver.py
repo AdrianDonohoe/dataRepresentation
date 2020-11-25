@@ -1,25 +1,29 @@
 #!flask/bin/python
-from flask import Flask, jsonify,  request, abort, make_response
+from flask import Flask, jsonify,  request, abort, make_response, json
 
 app = Flask(__name__,
             static_url_path='', 
             static_folder='../')
 
-states = [
-    {
-        "abv":"WV",
-        "name":"West Virginia",
-        "tv":545051,
-        "bv":235847,
-        "ecv": 5
-    },
-       { "abv":"AK",
-        "name":"Alaska",
-        "tv":189457,
-        "bv":153551,
-        "ecv": 3
-       }
-]
+#states = [
+#    {
+#        "abv":"WV",
+#        "name":"West Virginia",
+#        "tv":545051,
+#        "bv":235847,
+#        "ecv": 5
+#    },
+#       { "abv":"AK",
+#        "name":"Alaska",
+#        "tv":189457,
+#        "bv":153551,
+#        "ecv": 3
+#       }
+#]
+
+with open('../2_states.json') as f:
+    states = json.load(f)
+
 
 @app.route('/states', methods=['GET'])
 def get_states():
