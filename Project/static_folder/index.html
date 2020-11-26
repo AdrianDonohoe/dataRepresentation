@@ -296,13 +296,29 @@
             //console.log('State Drawn');
             winner.innerText = "State Drawn !!! Will never happen.";
         }
-       
         
 
         
         $(document).ready(function(){
-            $("#" + state['abv']).popover({ trigger:'hover', placement:'auto', title: state['name'], html : true, content: function() {return $("div." + state['abv']).html();}});
+            $("#" + state['abv']).popover({placement:'auto', trigger: 'manual', title: state['name'], html : true, content: function() {return $("div." + state['abv']).html();}});
         })
+
+        $('body').on('click', function (e) {
+            $('[data-toggle=popover]').each(function () {
+            // hide any open popovers when the anywhere else in the body is clicked
+                if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                    $(this).popover('hide');
+                }
+            });
+        });
+
+        $("[data-toggle=popover]").mousedown(function(){
+        // toggle popover when link is clicked
+            $(this).popover('toggle');
+        });
+
+        
+
     }
     
     
@@ -325,10 +341,53 @@
             }
         });
     }
+
+    function createStateAjax(state){
+                //var state = {"abv":"YY","name":"WhyY","ecv":5,"tv":3000,"bv": 10000,"tp": 10,"bp": 80}
+                console.log(JSON.stringify(state));
+
+                $.ajax({
+                    "url": "http://127.0.0.1:5000/states",
+                    "method":"POST",
+                    "data":JSON.stringify(state),
+                    "dataType": "JSON",
+                    contentType: "application/json; charset=utf-8",
+                    "success":function(result){
+                        console.log(result);
+                    },
+                    "error":function(xhr,status,error){
+                        console.log("error: "+status+" msg:"+error);
+                    }
+                });
+            }
     
+        function updateStateAjax(){
+            var state = {"abv":"AK","name":"AAlaska"}
+            //console.log(JSON.stringify(state));
+            
+
+            $.ajax({
+                "url": "http://127.0.0.1:5000/states/"+state.abv,
+                "method":"PUT",
+                "data":JSON.stringify(state),
+                "dataType": "JSON",
+                contentType: "application/json; charset=utf-8",
+                "success":function(result){
+                    console.log(result);
+                },
+                "error":function(xhr,status,error){
+                    console.log("error: "+status+" msg:"+error);
+                }
+            });
+        }
 
 
     getAllStates();
+
+    //updateStateAjax();
+    
+
+    //createStateAjax();
     //$("#AK").popover({trigger:'hover',placement:'auto', title: "Header", content: "Text in popover body"});
     
     
