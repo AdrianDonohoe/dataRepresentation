@@ -20,11 +20,38 @@
         transition: all ease .6s;
         opacity: 50%;
     }
+
+    #tecv {
+        float:left;
+        background-color: rgb(214,43,60);
+        padding: 5px;
+        margin: 5px;
+        width: 400px;
+
+    }
+
+    #becv {
+        
+        float:right;
+        background-color: rgb(33,142,205);
+        padding: 5px;
+        width: 400px;
+        margin: 5px;
+
+    }
 </style>
 <body>
 
-    
-    
+    <h1 style="text-align:center;">US Presidential Election 2020</h1>
+    <h2 style="text-align:center;">Map with Results by State</h2>
+    <h3>The Race to 270</h3>
+    <h4 id="tecv">Trump Electoral College Votes : <span id="trumpecv"></span></h4>
+    <h4 id="becv">Biden Electoral College Votes : <span id="bidenecv"></span></h4>
+    <br><br>
+    <br>
+    <br>
+
+        
 	<div id="myDiv">
         <svg height="2000" width="2000">
             
@@ -428,6 +455,7 @@
             
             updateStateAjax(state);
             getAllStates();
+            getEcvTotalAjax();
 
                 
 
@@ -461,18 +489,42 @@
                 form.querySelector('input[name="bp"]').value = ''
                 
                 
-            }
+        }
 
-            function showViewAll(){
+        function showViewAll(){
                 
-                document.getElementById("myDiv").style.display = "inline"
-                document.getElementById("updateForm").style.display = "none"
-            }
+            document.getElementById("myDiv").style.display = "inline"
+            document.getElementById("updateForm").style.display = "none"
+        }
 
+        function getEcvTotalAjax(){
+
+            $.ajax({
+                "url": "http://127.0.0.1:5000/ecvtotals",
+                "method":"GET",
+                "data":"",
+                "dataType": "JSON",
+                contentType: "application/json; charset=utf-8",
+                "success":function(result){
+                    console.log(result);
+                    setEcvTotals(result);
+                },
+                "error":function(xhr,status,error){
+                    console.log("error: "+status+" msg:"+error);
+                }
+            });
+        }
+        
+        function setEcvTotals(result){
+            
+            document.getElementById("trumpecv").textContent = result['ECV']['tecv'];
+            document.getElementById("bidenecv").textContent = result['ECV']['becv'];
+            
+            
+        }
         
         getAllStates();
-        //getStateByAbv('CA');
-        
+        getEcvTotalAjax();
         
 
 </script>

@@ -33,6 +33,21 @@ def get_states():
     return jsonify( {'states':states})
 # curl -i http://localhost:5000/states
 
+@app.route('/ecvtotals', methods=['GET'])
+def get_ecvtotal():
+    ttotal = 0
+    btotal = 0
+    for state in states:
+        if state['tv'] > state['bv']:
+            ttotal += state['ecv']
+        else:
+            btotal += state['ecv']
+    ecv = {"tecv": ttotal,
+            "becv": btotal}
+
+    return jsonify( {'ECV':ecv })
+
+
 @app.route('/states/<string:abv>', methods =['GET'])
 def get_state(abv):
     foundStates = list(filter(lambda t : t['abv'] == abv , states))
