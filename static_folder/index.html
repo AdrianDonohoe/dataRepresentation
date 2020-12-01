@@ -254,7 +254,7 @@
 
 <script>
     
-
+    host = window.location.origin;
 
 
     function setModals(state){
@@ -271,19 +271,12 @@
         var newDiv = document.createElement("div");
         modalClassName = state['abv'] + 'modal';
         newDiv.className = modalClassName;
-        var myHTML = '<div class="modal fade" id="exampleModal' + state['abv'] + '" tabindex="-1" aria-labelledby="exampleModal'+ state['abv'] +'Label" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="exampleModal' + state['abv']+ 'Label"><em><span class="statename">' + name +'</span>, <span class="stateAbv">'+ state['abv']+'</span>, ' + state['ecv'] + ' Electoral College Votes</em><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body"><div id="tv">'+ 'Trump Votes: <span class="tv">' + state['tv'] + '</span></div><div id="bv">'+ 'Biden Votes: <span class="bv">'+ state['bv'] + '</span></div><div id="tp">'+ 'Trump Vote Percentage: <span class="tp">' + state['tp'] + '</span></div><div id="bp">'+ 'Biden Vote Percentage: <span class="bp">' + state['bp'] + '</span></div><div id="winner">The Winner is: '+ winner +'</div></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button><button type="button" onclick="showUpdate(this);" class="btn btn-primary">Update</button><button type="button" class="btn btn-primary">Delete</button></div></div></div></div>';
+        var myHTML = '<div class="modal fade" id="exampleModal' + state['abv'] + '" tabindex="-1" aria-labelledby="exampleModal'+ state['abv'] +'Label" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="exampleModal' + state['abv']+ 'Label"><em><span class="statename">' + name +'</span>, <span class="stateAbv">'+ state['abv']+'</span>, ' + state['ecv'] + ' Electoral College Votes</em><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body"><div id="tv">'+ 'Trump Votes: <span class="tv">' + state['tv'] + '</span></div><div id="bv">'+ 'Biden Votes: <span class="bv">'+ state['bv'] + '</span></div><div id="tp">'+ 'Trump Vote Percentage: <span class="tp">' + state['tp'] + '</span></div><div id="bp">'+ 'Biden Vote Percentage: <span class="bp">' + state['bp'] + '</span></div><div id="winner">The Winner is: '+ winner +'</div></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button><button type="button" onclick="showUpdate(this);" class="btn btn-primary">Update</button></div></div></div></div>';
         var x = document.getElementById("allModals");
         x.appendChild(newDiv)
         y = document.getElementsByClassName(modalClassName)[0]
         y.innerHTML = myHTML;
         
-
-        
-
-        
-
-
-    
 
     }
         
@@ -306,7 +299,7 @@
     function getStateByAbv(abv){
         
         $.ajax({
-            "url": "http://127.0.0.1:5000/states/"+abv,
+            "url": host +abv,
             "method":"GET",
             "data":"",
             "dataType": "JSON",
@@ -325,7 +318,7 @@
 
     function getAllStates(){
         $.ajax({
-            "url": "http://127.0.0.1:5000/states",
+            "url": host + "/states",
             "method":"GET",
             "data":"",
             "dataType": "JSON",
@@ -348,7 +341,7 @@
                 //console.log(JSON.stringify(state));
 
                 $.ajax({
-                    "url": "http://127.0.0.1:5000/states",
+                    "url": host +"/states",
                     "method":"POST",
                     "data":JSON.stringify(state),
                     "dataType": "JSON",
@@ -368,7 +361,7 @@
             
 
             $.ajax({
-                "url": "http://127.0.0.1:5000/states/"+state.abv,
+                "url": host+ "/states/"+state.abv,
                 "method":"PUT",
                 "data":JSON.stringify(state),
                 "dataType": "JSON",
@@ -500,7 +493,7 @@
         function getEcvTotalAjax(){
 
             $.ajax({
-                "url": "http://127.0.0.1:5000/ecvtotals",
+                "url": host + "/ecvtotals",
                 "method":"GET",
                 "data":"",
                 "dataType": "JSON",
