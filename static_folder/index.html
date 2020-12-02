@@ -323,7 +323,7 @@
             "data":"",
             "dataType": "JSON",
             "success":function(result){
-                        for (state of result.states){
+                        for (state of result){
                             
                             updateStateMap(state);
                             setModals(state);
@@ -433,6 +433,8 @@
 
                 form.querySelector('input[name="abv"]').disabled = true;
                 form.querySelector('input[name="name"]').disabled = true;
+                form.querySelector('input[name="tp"]').disabled = true;
+                form.querySelector('input[name="bp"]').disabled = true;
 
                 form.querySelector('input[name="abv"]').value = state.abv;
                 form.querySelector('input[name="name"]').value = state.name;
@@ -450,7 +452,7 @@
             getAllStates();
             getEcvTotalAjax();
 
-                
+            
 
             clearForm();
             showViewAll()
@@ -463,8 +465,14 @@
             state.name = form.querySelector('input[name="name"]').value
             state.tv = Number(form.querySelector('input[name="tv"]').value)
             state.bv = Number(form.querySelector('input[name="bv"]').value)
-            state.tp = Number(form.querySelector('input[name="tp"]').value)
-            state.bp = Number(form.querySelector('input[name="bp"]').value)
+            //state.tp = Number(form.querySelector('input[name="tp"]').value)
+            //state.bp = Number(form.querySelector('input[name="bp"]').value)
+
+            totalVote = state.tv + state.bv
+            state.tp = ((state.tv/totalVote)*100).toFixed(2)
+            state.bp = ((state.bv/totalVote)*100).toFixed(2)
+            
+
             
             return state
         }
