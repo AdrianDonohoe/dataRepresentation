@@ -1,12 +1,13 @@
 import mysql.connector
 import json
+import dbconfig as cfg
 
 db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="1solari2",
-    database="datarep"
-    )
+    host=cfg.mysql['host'],
+    user=cfg.mysql['user'],
+    password=cfg.mysql['password'],
+    database=cfg.mysql['database']
+)
 
 
 
@@ -14,7 +15,7 @@ db = mysql.connector.connect(
 
 
 
-with open('states.json') as f:
+with open('../states.json') as f:
     states = json.load(f)
 
 for state in states:
