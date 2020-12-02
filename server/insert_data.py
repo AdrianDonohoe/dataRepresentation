@@ -20,7 +20,7 @@ with open('../states.json') as f:
 
 for state in states:
     mycursor = db.cursor()
-    sql = "insert into states (name,abv,electoral_votes,tv,bv,tp,bp) values  (%s,%s,%s,%s,%s,%s,%s)"
+    sql = "insert into states (name,abv,ecv,tv,bv,tp,bp) values  (%s,%s,%s,%s,%s,%s,%s)"
     values = (state['name'],state['abv'],state['ecv'],state['tv'],state['bv'],state['tp'],state['bp'])
 
     mycursor.execute(sql,values)

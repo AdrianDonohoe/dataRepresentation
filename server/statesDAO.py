@@ -31,7 +31,7 @@ class StatesDAO:
         db.close()
 
     def create(self):
-        with open('../states.json') as f:
+        with open('states.json') as f:
             states = json.load(f)
 
         for state in states:
