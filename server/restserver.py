@@ -1,15 +1,22 @@
 #!flask/bin/python
-from flask import Flask, jsonify,  request, abort, make_response, json
+from flask import Flask, jsonify,  request, abort, make_response, json,  redirect
 from statesDAO import statesDAO
 
-app = Flask(__name__,
-            static_url_path='', 
-            static_folder='../static_folder')
+
+
+app = Flask(__name__,static_url_path='', static_folder='../static_folder')
+
 
 
 @app.route('/')
 def home():
     return app.send_static_file('index.html')
+    
+
+
+
+
+
 
 @app.route('/states', methods=['GET'])
 def get_states():
@@ -20,6 +27,7 @@ def get_states():
 
 @app.route('/ecvtotals', methods=['GET'])
 def get_ecvtotal():
+    
     ttotal = 0
     btotal = 0
     states = statesDAO.getAll()
@@ -36,6 +44,7 @@ def get_ecvtotal():
 
 @app.route('/states/<string:abv>', methods =['GET'])
 def findStateByAbv(abv):
+    
     foundState = statesDAO.findByAbv(abv)
 
     return jsonify(foundState)
@@ -44,6 +53,7 @@ def findStateByAbv(abv):
 
 @app.route('/states/<string:abv>', methods=['PUT'])
 def update_state(abv):
+    
     foundState = statesDAO.findByAbv(abv)
     
     if not foundState:
