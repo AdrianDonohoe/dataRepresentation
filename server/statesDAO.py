@@ -27,56 +27,66 @@ class StatesDAO:
     
     
     def __init__(self): 
-        db=self.initConnectToDB()
-        db.close()
+        try:
+            db=self.initConnectToDB()
+        finally:
+            db.close()
 
     def create(self):
         with open('states.json') as f:
             states = json.load(f)
 
         for state in states:
-            db = self.getConnection()
-            mycursor = db.cursor()
-            sql = "insert into states (name,abv,ecv,tv,bv,tp,bp) values  (%s,%s,%s,%s,%s,%s,%s)"
-            values = (state['name'],state['abv'],state['ecv'],state['tv'],state['bv'],state['tp'],state['bp'])
+            try:
+                db = self.getConnection()
+                mycursor = db.cursor()
+                sql = "insert into states (name,abv,ecv,tv,bv,tp,bp) values  (%s,%s,%s,%s,%s,%s,%s)"
+                values = (state['name'],state['abv'],state['ecv'],state['tv'],state['bv'],state['tp'],state['bp'])
 
-            mycursor.execute(sql,values)
-            db.commit()
-            db.close()
+                mycursor.execute(sql,values)
+                db.commit()
+            finally:
+                db.close()
 
     def getAll(self):
-        db = self.getConnection()
-        cursor = db.cursor()
-        sql="select * from states"
-        cursor.execute(sql)
-        results = cursor.fetchall()
+        try:
+            db = self.getConnection()
+            cursor = db.cursor()
+            sql="select * from states"
+            cursor.execute(sql)
+            results = cursor.fetchall()
 
-        returnArray = []
+            returnArray = []
         
-        for result in results:
-            returnArray.append(self.convertToDictionary(result))
-        db.close()
-        return returnArray
+            for result in results:
+                returnArray.append(self.convertToDictionary(result))
+        finally:
+            db.close()
+            return returnArray
         
 
     def update(self, values):
-        db = self.getConnection()
-        cursor = db.cursor()
-        sql="update states set tv = %s, bv = %s, tp = %s, bp = %s where abv = %s"
-        cursor.execute(sql, values)
-        db.commit()
-        db.close()
+        try:
+            db = self.getConnection()
+            cursor = db.cursor()
+            sql="update states set tv = %s, bv = %s, tp = %s, bp = %s where abv = %s"
+            cursor.execute(sql, values)
+            db.commit()
+        finally:
+            db.close()
 
     def findByAbv(self, abv):
-        db = self.getConnection()
-        cursor = db.cursor()
-        sql="select * from states where abv = %s"
-        values = (abv,)
+        try:
+            db = self.getConnection()
+            cursor = db.cursor()
+            sql="select * from states where abv = %s"
+            values = (abv,)
 
-        cursor.execute(sql, values)
-        result = cursor.fetchone()
-        db.close()
-        return self.convertToDictionary(result)
+            cursor.execute(sql, values)
+            result = cursor.fetchone()
+        finally:
+            db.close()
+            return self.convertToDictionary(result)
 
     def convertToDictionary(self, result):
         colnames=['name','abv','ecv', 'tv','bv','tp','bp']
