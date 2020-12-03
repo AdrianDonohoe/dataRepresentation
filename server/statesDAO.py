@@ -28,8 +28,8 @@ class StatesDAO:
     def __init__(self): 
         try:
             db=self.initConnectToDB()
-        except e:
-            print(e)
+        except:
+            print('something wrong !!!')
         finally:
             db.close()
 
@@ -49,8 +49,8 @@ class StatesDAO:
 
                 cursor.execute(sql,values)
                 db.commit()
-            except e:
-                print(e)
+            except:
+                print('something wrong !!!')
             finally:
                 db.close()
 
@@ -66,8 +66,8 @@ class StatesDAO:
         
             for result in results:
                 returnArray.append(self.convertToDictionary(result))
-        except e:
-            print(e)
+        except:
+            print('something wrong !!!')
         finally:
             db.close()
         return returnArray
@@ -80,8 +80,8 @@ class StatesDAO:
             sql="update states set tv = %s, bv = %s, tp = %s, bp = %s where abv = %s"
             cursor.execute(sql, values)
             db.commit()
-        except e:
-            print(e)
+        except:
+            print('something wrong !!!')
         finally:
             db.close()
 
@@ -94,8 +94,8 @@ class StatesDAO:
 
             cursor.execute(sql, values)
             result = cursor.fetchone()
-        except e:
-            print(e)
+        except:
+            print('something wrong !!!')
         finally:
             db.close()
         return self.convertToDictionary(result)
