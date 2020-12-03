@@ -1,10 +1,12 @@
 import mysql.connector
+import dbconfig as cfg
+
 
 db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="1solari2",
-    database="datarep"
+    host=cfg.mysql['host'],
+    user=cfg.mysql['user'],
+    password=cfg.mysql['password'],
+    database=cfg.mysql['database']
     )
 
 mycursor = db.cursor()
