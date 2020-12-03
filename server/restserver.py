@@ -1,6 +1,6 @@
 #!flask/bin/python
 from flask import Flask, jsonify,  request, abort, make_response, json,  redirect
-from statesDAO import statesDAO
+from statesDAO import StatesDAO
 
 
 
@@ -14,14 +14,11 @@ def home():
     
 
 
-
-
-
-
 @app.route('/states', methods=['GET'])
 def get_states():
-    states = statesDAO.getAll()
-    
+    mystates = StatesDAO()
+    states = mystates.getAll()
+    mystates.closeConnection()
     return jsonify(states)
 # curl -i http://localhost:5000/states
 
@@ -30,7 +27,8 @@ def get_ecvtotal():
     
     ttotal = 0
     btotal = 0
-    states = statesDAO.getAll()
+    mystates = StatesDAO()
+    states = mystates.getAll()
     for state in states:
         if state['tv'] > state['bv']:
             ttotal += state['ecv']
@@ -38,23 +36,24 @@ def get_ecvtotal():
             btotal += state['ecv']
     ecv = {"tecv": ttotal,
             "becv": btotal}
-
+    mystates.closeConnection()
     return jsonify( {'ECV':ecv })
 
 
 @app.route('/states/<string:abv>', methods =['GET'])
 def findStateByAbv(abv):
-    
-    foundState = statesDAO.findByAbv(abv)
-
+    mystates = StatesDAO()
+    foundState = mystates.findByAbv(abv)
+    mystates.closeConnection()
     return jsonify(foundState)
 #curl -i http://localhost:5000/states/TX
 
 
 @app.route('/states/<string:abv>', methods=['PUT'])
 def update_state(abv):
-    
-    foundState = statesDAO.findByAbv(abv)
+    mystates = StatesDAO()
+    foundState = mystates.findByAbv(abv)
+    mystates.closeConnection()
     
     if not foundState:
         abort(404)
@@ -76,7 +75,9 @@ def update_state(abv):
     foundState['tp'] = request.json.get('tp', foundState['tp'])
     foundState['bp'] = request.json.get('bp', foundState['bp'])
     values = (foundState['tv'],foundState['bv'],foundState['tp'],foundState['bp'],foundState['abv'])
-    statesDAO.update(values)
+    states = StatesDAO()
+    states.update(values)
+    states.closeConnection()
     return jsonify(foundState)
 #curl -i -H "Content-Type:application/json" -X PUT -d '{"name": "AAlaska"}' http://localhost:5000/states/AK
 
