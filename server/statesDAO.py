@@ -7,31 +7,48 @@ import dbconfig as cfg
 class StatesDAO:
     
     def initConnectToDB(self):
+        try:
+            db = mysql.connector.connect(
+                host=cfg.mysql['host'],
+                user=cfg.mysql['user'],
+                password=cfg.mysql['password'],
+                database=cfg.mysql['database'],
+                pool_name='my_connection_pool',
+                pool_size=3
+            )
         
-        db = mysql.connector.connect(
-            host=cfg.mysql['host'],
-            user=cfg.mysql['user'],
-            password=cfg.mysql['password'],
-            database=cfg.mysql['database'],
-            pool_name='my_connection_pool',
-            pool_size=3
-        )
+            return db
         
-        return db
+        except mysql.connector.Error as err:
+            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+                print("Something is wrong with your user name or password")
+            elif err.errno == errorcode.ER_BAD_DB_ERROR:
+                print("Database does not exist")
+            else:
+                print(err)
+        else:
+            db.close()
+        
     
     def getConnection(self):
-        db = mysql.connector.connect(
+        try:
+            db = mysql.connector.connect(
             pool_name='my_connection_pool'
         )
-        return db
+            return db
+        except mysql.connector.Error as err:
+            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+                print("Something is wrong with your user name or password")
+            elif err.errno == errorcode.ER_BAD_DB_ERROR:
+                print("Database does not exist")
+            else:
+                print(err)
+        else:
+            db.close()
     
     def __init__(self): 
-        try:
-            db=self.initConnectToDB()
-        except:
-            print('something wrong !!!')
-        finally:
-            db.close()
+        db=self.initConnectToDB()
+        db.close()
 
     
 
