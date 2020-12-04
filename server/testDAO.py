@@ -1,17 +1,9 @@
-from statesDAO import StatesDAO
+from test_pool import statesDAO
 
-x = StatesDAO()
+values = (1434159,843473,62.1,36.5,'AL')
+statesDAO.update(values)
 
-y = x .getAll()
+y = statesDAO.findByAbv('AL')
 
 print(y)
 
-x.closeConnection()
-
-x = StatesDAO()
-values = (1,2,3.6,55.5,'AL')
-x.update(values)
-
-
-
-x.closeConnection()
