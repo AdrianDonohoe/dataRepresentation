@@ -13,7 +13,7 @@ The database object uses a connection pool to help stability of interactions to 
 
 The app can be run locally by downloading the repository and initialising the database with the create_db.sql and init_db_tables.sql.
 
-Or it can be found hosted on my pythonanywhere site : [aidodo.pythonanywhere.com](http://aidodo.pythonanywhere.com/)
+Or it can be found hosted on my pythonanywhere site : [aidodo.pythonanywhere.com](http://aidodo.pythonanywhere.com/). There are some "_mysql_connector.MySQLInterfaceError: Lost connection to MySQL server during query" errors from the hosted version of the app. While the app wroks very well locally, there are lost connection erros from the hosted version. This is due to the mysql queries timing out. The DAO uses pooled connections, so this should not happen. For future apps, I would use a different host service.
 
 
 The web application is comprised of a Python Flask REST server (restserver.py), a MySQL DB Object (StatesDAO.py), a HTML frontend page (index.html).
